@@ -110,40 +110,44 @@ void lst_libera(Lista *l)
 	}
 }
 
+// Função que insere um novo valor, de forma ordenada
 Lista *lst_insere_ordenada(Lista *l, int v)
 {
 	Lista *novo;								// cria um ponteiro auxiliar "novo"
 	Lista *ant = NULL;							// cria um ponteiro auxiliar "ant", para apontar para o elemento anterior da lista, e inicializa com [NULL]
 	Lista *p = l;								// cria um ponteiro auxiliar "p", inicializada com a lista "l"
-	while (p != NULL && p->info < v)
+	while (p != NULL && p->info < v)			// O laço de repetição irá percorrer os valores da lista até chegar no fim da lista, ou encontrar um valor menor
 	{
-		ant = p;
-		p = p->prox;
+		ant = p;		// "ant" aponta para o valor atual de "p"
+		p = p->prox;	// "p" passa a apontar para o próximo valor
 	}
-	novo = (Lista *)malloc(sizeof(Lista));
-	novo->info = v;
-	if (ant == NULL)
-	{
-		novo->prox = l;
-		l = novo;
+	novo = (Lista *)malloc(sizeof(Lista));		// "novo" é inicializado com um novo espaço de memória alocado
+	novo->info = v;								// o novo elemento tem seu valor info preenchido
+	
+	// o novo elemento será adicionado no encadeamento
+	if (ant == NULL)		// a lista está vazia, ou não foi encontrado valores menores na lista
+	{							// novo é adicionado no início da lista
+		novo->prox = l;			// parâmetro "prox" do novo valor aponta para o endereço do primeiro elemento
+		l = novo;				// o valor de "novo" é adicionado no início da lista
 	}
-	else
-	{
-		novo->prox = ant->prox;
-		ant->prox = novo;
+	else					// a varredura do laço while foi usada, modificando o valor de "ant"
+	{								
+		novo->prox = ant->prox;		// o parâmetro "prox" do novo elemento apontará para o mesmo valor apontado pelo elemento "ant"
+		ant->prox = novo;			// elemento "ant" apontará para o novo elemento
 	}
-	return l;
+	return l;	// retorna o endereço do valor inicial da lista encadeada
 }
 
+// Função que abre um arquivo e lê os valores armazenados:
 Lista *lst_ler_arquivo(char *nome_arquivo)
 {
-	FILE *arquivo;
-	int valor;
-	Lista *l = lst_cria();
-	arquivo = fopen(nome_arquivo, "r");
-	if (arquivo == NULL)
-	{
-		printf("Erro ao abrir o arquivo!\n");
+	FILE *arquivo;							// declara um ponteiro para uma variável do tipo FILE
+	int valor;								// declara uma variável do tipo inteiro
+	Lista *l = lst_cria();					// inicializa uma lista
+	arquivo = fopen(nome_arquivo, "r");		// abre o arquivo com o nome inserido
+	if (arquivo == NULL)					// verifica se a abertura ocorreu com sucesso
+	{					
+		printf("Erro ao abrir o arquivo!\n");	// caso verdadeiro, imprime uma mensagem de erro e encerra o programa.
 		exit(1);
 	}
 	while (fscanf(arquivo, "%d", &valor) != EOF)
