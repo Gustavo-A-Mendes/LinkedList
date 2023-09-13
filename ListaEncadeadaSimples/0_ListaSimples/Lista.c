@@ -5,7 +5,7 @@ Listas encadeadas são estruturas de dados que permitem armazenar uma coleção
 Neste arquivo, temos a implementação de uma lista encadeada simples de inteiros.
 */
 
-#include "lista.h"
+#include "Lista.h"
 
 // struct para manipulação de uma lista de números
 struct lista
@@ -157,3 +157,12 @@ Lista *lst_ler_arquivo(char *nome_arquivo)
 	fclose(arquivo);
 	return l;
 }
+
+void lcirc_imprime(Lista* l) {
+	Lista *p = l; /* faz p apontar para o nó inicial */
+	/* testa se lista não é vazia e então percorre com do-while */
+	if (p) do {
+		printf("%d\n", p->info); /* imprime informação do nó*/
+		p = p->prox; /**/
+	} while (p != l);
+} 
